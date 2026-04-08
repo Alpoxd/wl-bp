@@ -1,0 +1,54 @@
+syntax = "proto3";
+package wlbp;
+
+service WLBPService {
+  // Create a new tunnel
+  rpc CreateTunnel(CreateTunnelRequest) returns (CreateTunnelResponse);
+  
+  // Get tunnel status
+  rpc GetTunnelStatus(TunnelStatusRequest) returns (TunnelStatusResponse);
+  
+  // Close tunnel
+  rpc CloseTunnel(CloseTunnelRequest) returns (CloseTunnelResponse);
+  
+  // List active tunnels for user
+  rpc ListTunnels(ListTunnelsRequest) returns (ListTunnelsResponse);
+}
+
+message CreateTunnelRequest {
+  string platform = 1;   // "vk" | "telemost"
+  string mode = 2;       // "dc" | "video"
+  int64 user_id = 3;
+}
+
+message CreateTunnelResponse {
+  string session_id = 1;
+  string join_link = 2;
+  string status = 3;
+}
+
+message TunnelStatusRequest {
+  string session_id = 1;
+}
+
+message TunnelStatusResponse {
+  string status = 1;
+  int64 bytes_tx = 2;
+  int64 bytes_rx = 3;
+}
+
+message CloseTunnelRequest {
+  string session_id = 1;
+}
+
+message CloseTunnelResponse {
+  bool success = 1;
+}
+
+message ListTunnelsRequest {
+  int64 user_id = 1;
+}
+
+message ListTunnelsResponse {
+  repeated TunnelStatusResponse tunnels = 1;
+}

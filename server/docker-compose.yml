@@ -1,0 +1,16 @@
+services:
+  wlbp-server:
+    build: .
+    network_mode: host
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - ./data:/data
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    security_opt:
+      - seccomp=unconfined
+    shm_size: "256m"
